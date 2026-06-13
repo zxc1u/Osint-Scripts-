@@ -1,3 +1,2 @@
 # Version Black_Internet_Spy
-
-<img width="1265" height="546" alt="изображение" src="https://github.com/user-attachments/assets/7859d550-ac22-4253-85b6-c39df8643619" />
+<img width="1289" height="455" alt="image" src="https://github.com/user-attachments/assets/e9227d8b-2531-4f9f-be6e-63f025e98374" />
