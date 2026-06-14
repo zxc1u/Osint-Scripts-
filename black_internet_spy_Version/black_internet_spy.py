@@ -4,6 +4,8 @@ import time
 
 # Цветовые коды для терминала
 R = "\033[31m"
+P = '\033[1;35m'
+B = '\033[1;34m' 
 G = "\033[32m"
 Y = "\033[33m"
 O = "\033[33m"
@@ -46,13 +48,13 @@ def show_logo(current_target="НЕ ВКАЗАНО"):
         f"{R}                                   ╠═════════════════════════════════════════════════════════════════════════════════════════════╣{W}"
     )
     print(
-        f"{R}                                   ║             {W}  [{O}1{W}] Maigret Scan       [{O}4{W}] Social-Analyzer    [{O}6{W}] PChange Target              {R}║{W}"
+        f"{R}                                   ║             {W}  [{O}1{W}] Maigret Scan       [{O}4{W}] Social-Analyzer    [{O}7{W}] PChange Target              {R}║{W}"
     )
     print(
         f"{R}                                   ║             {W}  [{O}2{W}] Sherlock Scan      [{O}5{W}] Holehe (Email)     [{O}0{W}] Exit System                 {R}║{W}"
     )
     print(
-        f"{R}                                   ║             {W}  [{O}3{W}] H8mail (Email)                                                            {R}║{W}"
+        f"{R}                                   ║             {W}  [{O}3{W}] H8mail (Email)     [{O}6{W}] Dossier Generator                                  {R}║{W}"
     )
     print(
         f"{R}                                   ╚═════════════════════════════════════════════════════════════════════════════════════════════╝{W}"
@@ -79,14 +81,13 @@ def run_scan(module_name, target):
         os.system(
             f"{venv_python} -m social-analyzer --cli --mode 'fast' --username '{target}' --websites 'all' --filter 'good'"
         )
-
+    elif module_name == "DOSSIER":
+        DOSSIER(target)
     elif module_name == "HOLEHE":
         os.system(f"{holehe_bin} {target}")
 
     elif module_name == "H8MAIL":
         os.system(f"{h8mail_bin} -t {target}")
-
-
 
 def main_menu():
     target = ""
@@ -97,10 +98,9 @@ def main_menu():
 
         choice = input(f"{G}\n[>] Выберите Действие: {W}").strip()
 
-        if choice in ["1", "2", "3", "4", "5",]:
-            if not target:
-                
-                if choice in ["5", "6"]:
+        if choice in ["1", "2", "3", "4", "5","6"]:
+            if not target and choice != "6":
+                if choice in ["3", "5"]:
                     prompt_text = (
                         f"\n{O}[+] Введите Email для поиска витоков: {W}"
                     )
@@ -113,6 +113,7 @@ def main_menu():
                     time.sleep(1.5)
                     continue
 
+
             if choice == "1":
                 run_scan("MAIGRET", target)
             elif choice == "2":
@@ -123,14 +124,14 @@ def main_menu():
                 run_scan("SOCIAL_ANALYZER", target)
             elif choice == "5":
                 run_scan("HOLEHE", target)
-            
+            elif choice == "6":
+                run_scan("DOSSIER", target)
 
-            input(f"\n{Y}[ Нажмите Enter для перехода в Menu]{W}")
-
-        elif choice == "6":
+            input(f"\n{Y}[ Нажмите Enter для перехода в Menu]{W}")       
+        elif choice == "7":
             new_target = (
                 input(
-                    f"\n{G}[+] Введите новый никнейм, Email {W}"
+                    f"\n{G}[+] Введите новый никнейм, Email: {W}"
                 )
                 .strip()
             )
@@ -148,8 +149,51 @@ def main_menu():
         else:
             print(f"\n{R}[-] Неверный выбор. Попробуйте еще раз.{W}")
             time.sleep(1)
+def DOSSIER(target):
+    print(f"{Y}[?] ЗАПОЛНЕНИЕ ДАННЫХ ОБЪЕКТА (Оставьте пустым, если нет данных):{W}\n")
+    
+    fio = input(f" {O}├──{W} Введите ФИО: ").strip()
+    nickname = input(f" {O}├──{W} Введите Никнейм (username): ").strip()
+    phone = input(f" {O}├──{W} Введите Номер телефона: ").strip()
+    email = input(f" {O}├──{W} Введите Электронную почту (Email): ").strip()
+    location = input(f" {O}├──{W} Где живет (Город/Адрес): ").strip()
+    school = input(f" {O}├──{W} Где учиться (Школа/Адрес): ").strip()
+    bio = input(f" {O}├──{W} Дополнительные заметки/работа: ").strip()
+    fioR = input(f" {O}├──{W} Введите ФИО родителей: ").strip() #родители 
+    phone0 = input(f" {O}├──{W} Введите Номер родителей (матери или отца): ").strip()
+    bior = input(f" {O}├──{W} Введите роботу родителей: ").strip()
+    valid = input(f" {O}└──{W} Введите кем был валидован: ").strip()
 
-
+    print(f"\n{Y}[*] Анализ и структурирование информации...{W}")
+    time.sleep(1.5)
+    os.system("cls" if os.name == "nt" else "clear")
+    print(f"{G}[+] СФОРМИРОВАННОЕ ДОСЬЕ ОБЪЕКТА{W}") 
+    print(f"{B} Target Profile:{W}")
+    
+    if fio:
+        print(f" {O}├──{W} ФИО: {G}{fio}{W}")
+    if nickname:
+        print(f" {O}├──{W} Никнейм: {P}@{nickname}{W} ◄")
+    if phone:
+        print(f" {O}├──{W} Телефон: {Y}{phone}{W}")
+    if email:
+        print(f" {O}├──{W} Email: {Y}{email}{W}")
+    if location:
+        print(f" {O}├──{W} Место жительства: {G}{location}{W} ⟵")
+    if school:
+        print(f" {O}├──{W} Учиться в : {G}{school}{W} ⟵")
+    if bio:
+        print(f" {O}├──{W} Примечания: {W}{bio}{W}")
+    if fioR:
+        print(f" {O}├──{W} Фио родителей: {W}{fioR}{W}")
+    if phone0:
+        print(f" {O}├──{W} Номер родителей: {W}{phone0}{W}")
+    if bior:
+        print(f" {O}├──{W} Робота родителей: {W}{bior}{W}")
+    if valid:
+        print(f" {O}└──{W} Validated By: {W}{valid}{W}")
+    else:
+        print(f" {O}└──{W} Конец записи.")
 if __name__ == "__main__":
     try:
         main_menu()
